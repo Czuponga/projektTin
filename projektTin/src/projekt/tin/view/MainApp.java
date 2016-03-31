@@ -19,6 +19,7 @@ public class MainApp extends JFrame {
 		TextFileReader fileReader = new TextFileReader();
 		timeCount = fileReader.countFileLines(path);
 		System.out.println(timeCount);
+		fileReader.numberOfCalls();
 	}
 
 	public static void main(String[] args) {

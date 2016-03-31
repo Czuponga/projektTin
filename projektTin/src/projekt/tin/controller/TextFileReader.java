@@ -1,9 +1,11 @@
 package projekt.tin.controller;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class TextFileReader {
 	public long countFileLines(String path) {
@@ -26,5 +28,33 @@ public class TextFileReader {
 		
 	}
 	
+	//zwraca listê której indexy s¹ numerami kwadransów, wartoœci iloœci¹ wywo³añ w kwadransach
+	public void numberOfCalls() {
+		int minute;
+		int value;
+		String line;
+		String path  = "./resources/INT.TXT";
+		String sCurrentLine;
+		List<Integer> calls = new ArrayList<Integer>();
+		
+		FileInputStream input = null;
+		BufferedReader br;
+		
+		try {
+			input = new FileInputStream(path);
+			br = new BufferedReader(new InputStreamReader(input));
+			while ((sCurrentLine = br.readLine()) != null) {
+				for (String str2 : sCurrentLine.split("\\t")) {
+					System.out.println(str2);
+					
+					
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return;
+	}
 	
 }
