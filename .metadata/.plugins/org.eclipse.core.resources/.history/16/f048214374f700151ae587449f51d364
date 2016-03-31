@@ -55,12 +55,12 @@ public class TextFileReader {
 
 	// zwraca listê której indexy s¹ numerami kwadransów, wartoœci iloœci¹
 	// wywo³añ w kwadransach
-	public List<Double> numberOfCallsInEachMinute() {
+	public List<Integer> numberOfCallsInEachMinute() {
 		int minute = 0;
-		double value = 0;
-		double tempValue = 0;
+		long value = 0;
+		int tempValue = 0;
 		String sCurrentLine;
-		List<Double> calls = new ArrayList<Double>();
+		List<Long> calls = new ArrayList<Long>();
 		int whichStep = 0;
 		int whichQuarter = 1;
 
@@ -71,7 +71,7 @@ public class TextFileReader {
 					if (whichStep == 0) {
 						minute = Integer.parseInt(tempString);
 					} else if (whichStep == 1) {
-						tempValue = Double.parseDouble(tempString)
+						tempValue = Integer.parseInt(tempString)
 								* numberOfCallsInDay;
 						if (minute <= whichQuarter * 15) {
 							value += tempValue;

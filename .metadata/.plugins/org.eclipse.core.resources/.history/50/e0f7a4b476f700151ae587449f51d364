@@ -57,7 +57,7 @@ public class TextFileReader {
 	// wywo³añ w kwadransach
 	public List<Double> numberOfCallsInEachMinute() {
 		int minute = 0;
-		double value = 0;
+		int value = 0;
 		double tempValue = 0;
 		String sCurrentLine;
 		List<Double> calls = new ArrayList<Double>();
