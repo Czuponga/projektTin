@@ -1,0 +1,9 @@
+package projekt.tin.threads;
+
+public class mainThread extends Thread {
+	public mainThread() {
+		start();
+	}
+	
+	
+}
