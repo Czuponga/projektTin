@@ -24,6 +24,7 @@ public class DaysGenerator {
 					newQuarter = ThreadLocalRandom.current().nextDouble((quarter - 50), (quarter + 50));
 					list.add(newQuarter);
 				}
+				System.out.println(newQuarter);
 				i++;
 			}
 			daysList.add(list);
