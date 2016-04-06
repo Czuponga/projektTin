@@ -20,7 +20,8 @@ public class TextFileReader {
 		this.path = path;
 		try {
 			input = new FileInputStream(path);
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Brakuje pliku z danymi.");
 		}
 	}
@@ -33,7 +34,8 @@ public class TextFileReader {
 		this.path = path;
 		try {
 			input = new FileInputStream(path);
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Brakuje pliku z danymi.");
 		}
 	}
@@ -46,7 +48,8 @@ public class TextFileReader {
 				linesCounter++;
 			}
 			br.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 		numberOfCallsInDay = linesCounter;
@@ -70,12 +73,14 @@ public class TextFileReader {
 				for (String tempString : sCurrentLine.split("\\t")) {
 					if (whichStep == 0) {
 						minute = Integer.parseInt(tempString);
-					} else if (whichStep == 1) {
+					}
+					else if (whichStep == 1) {
 						tempValue = Double.parseDouble(tempString)
 								* numberOfCallsInDay;
 						if (minute <= whichQuarter * 15) {
 							value += tempValue;
-						} else if (minute > whichQuarter * 15) {
+						}
+						else if (minute > whichQuarter * 15) {
 							calls.add(value);
 							value = 0;
 							value += tempValue;
@@ -88,7 +93,8 @@ public class TextFileReader {
 				}
 			}
 			br.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 		return calls;

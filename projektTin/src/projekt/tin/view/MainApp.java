@@ -1,5 +1,6 @@
 package projekt.tin.view;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,61 +20,90 @@ import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.TextFileReader;
 
 public class MainApp extends JFrame implements ActionListener {
-	
+
 	private static final long serialVersionUID = 1L;
 	private int timeCount;
 	private String timePath = "./resources/CZAS.TXT";
 	private String intPath = "./resources/INT.TXT";
 	private JMenuBar menuBar;
-	private JMenu menuHelp;
-	private JMenuItem miAuthors, miAboutApp, miAboutGNR, miHowToUse;
-	public List<List> thirtyDaysQuarters = new ArrayList<>();
-	
-	public MainApp(){
+	private JMenu menuHelp, menuAboutGNR;
+	private JMenuItem miAuthors, miAboutApp, miHowToUse,
+			miAboutTCBH, miAboutADPQH, miAboutADPFH, miAboutFDMP, miAboutFDMH;
+	public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
+
+	public MainApp() {
 		setTitle("GNR");
-		setSize(500,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		createGUI();
 		setVisible(true);
-		
+		setResizable(false);
+		getContentPane().add(new MainOptionsPanel(), BorderLayout.WEST);
+		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
+		pack();
+
+		TextFileReader fileReader = new TextFileReader(timePath);
+		timeCount = fileReader.countFileLines();
+		fileReader.setPath(intPath);
+		DaysGenerator days = new DaysGenerator();
+		List<Double> firstDay = new ArrayList<>();
+		thirtyDaysCallsInQuarters = days.generateDays(fileReader
+				.numberOfCallsInEachMinute());
+		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
+			System.out.println(thirtyDaysCallsInQuarters.get(i).size());
+		}
+		// thirtyDaysCallsInQuarters.get(0).get()
+
+	}
+
+	public void createGUI() {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException
+			UIManager
+					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		}
+		catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		
 		menuBar = new JMenuBar();
 		menuHelp = new JMenu("Pomoc");
+		menuAboutGNR = new JMenu("O GNR");
 		miAboutApp = new JMenuItem("O programie");
-		miAboutGNR = new JMenuItem("O GNR");
 		miHowToUse = new JMenuItem("Jak korzystaæ");
 		miAuthors = new JMenuItem("Autorzy");
-		
+		miAboutADPFH = new JMenuItem("O ADPFH");
+		miAboutADPQH = new JMenuItem("O ADPQH");
+		miAboutFDMH = new JMenuItem("O FDMH");
+		miAboutFDMP = new JMenuItem("O FDMP");
+		miAboutTCBH = new JMenuItem("O TCBH");
+
 		setJMenuBar(menuBar);
 		menuBar.add(Box.createHorizontalGlue());
 		menuBar.add(menuHelp);
 		menuHelp.add(miAboutApp);
-		menuHelp.add(miAboutGNR);
+		menuHelp.add(menuAboutGNR);
 		menuHelp.add(miHowToUse);
 		menuHelp.add(miAuthors);
+		menuAboutGNR.add(miAboutTCBH);
+		menuAboutGNR.add(miAboutADPQH);
+		menuAboutGNR.add(miAboutADPFH);
+		menuAboutGNR.add(miAboutFDMP);
+		menuAboutGNR.add(miAboutFDMH);
 		
+
 		miAboutApp.addActionListener(this);
-		miAboutGNR.addActionListener(this);
 		miAuthors.addActionListener(this);
 		miHowToUse.addActionListener(this);
-		
-		
-		TextFileReader fileReader = new TextFileReader(timePath);
-		timeCount = fileReader.countFileLines();
-		fileReader.setPath(intPath);
-		DaysGenerator days = new DaysGenerator(); 
-		thirtyDaysQuarters = days.generateDays(fileReader.numberOfCallsInEachMinute());
+		miAboutADPFH.addActionListener(this);
+		miAboutADPQH.addActionListener(this);
+		miAboutFDMH.addActionListener(this); 
+		miAboutFDMP.addActionListener(this);
+		miAboutTCBH.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run(){	
-				MainApp mainApp = new MainApp();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new MainApp();
 			}
 		});
 
@@ -82,23 +112,26 @@ public class MainApp extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
-		if(src==miAboutApp){
+		if (src == miAboutApp) {
 			String message = "Ten program wizualizuje ró¿ne metody wyznaczania Godziny Najwiêkszego Ruchu. Rysuje równie¿ wykresy.";
 			JOptionPane.showMessageDialog(null, message);
 		}
-		else if(src==miAboutGNR){
-			String message = "Tutaj opiszemy wszystkie metody wyznaczania GNR";
-			JOptionPane.showMessageDialog(null,message);
-		}
-		else if(src==miAuthors){
+//		else if (src == miAboutGNR) {
+//			String message = "Tutaj opiszemy wszystkie metody wyznaczania GNR";
+//			JOptionPane.showMessageDialog(null, message);
+//		}
+		else if (src == miAuthors) {
 			String message = "Program stworzyli zajebiœci studenci 2 roku teleinformytyki Politechniki Wroc³awskiej. \n Jakub Parys i Adrian Kuliñski";
 			JOptionPane.showMessageDialog(null, message);
 		}
-		else if(src==miHowToUse){
+		else if (src == miHowToUse) {
 			String message = "Ma³y help dla ograniczonych gdzie maj¹ klikaæ";
 			JOptionPane.showMessageDialog(null, message);
 		}
-		
+		else if(src == miAboutADPFH){
+			JOptionPane.showMessageDialog(null, "ADPFH");
+		}
+
 	}
 
 }
