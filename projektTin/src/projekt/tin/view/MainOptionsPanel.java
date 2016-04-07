@@ -7,14 +7,19 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import projekt.tin.controller.TextFileReader;
 
 public class MainOptionsPanel extends JPanel implements ActionListener {
 
@@ -24,9 +29,14 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 	private JButton bFileOne, bFileTwo;
 	private JRadioButton rbMethod1, rbMethod2, rbMethod3, rbMethod4;
 	private ButtonGroup bgMethodChooser;
+	private List<Double> oneDayCallsInQuarter;
 
 	public MainOptionsPanel() {
 		super(new GridBagLayout());
+		createAndShowComponents();
+	}
+
+	public void createAndShowComponents(){
 		setVisible(true);
 		setPreferredSize(new Dimension(250, 300));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -87,22 +97,38 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 
 		add(rbMethod4, gbc);
 	}
-
+	
+	public boolean canStart(){
+		if(oneDayCallsInQuarter!=null){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
+		int numberOfCallsInDay = 0;
+		TextFileReader fileReader;
 		if (src == bFileOne) {
 			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				lFileOne.setText(file.getName());
 				bFileTwo.setEnabled(true);
+				fileReader = new TextFileReader(file.getAbsolutePath());
+				numberOfCallsInDay = fileReader.countFileLines();
 			}
 		}
 		else if (src == bFileTwo) {
 			JFileChooser fileChooser = new JFileChooser();
+			//oneDayCallsInQuarter = new ArrayList<>();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
+				fileReader = new TextFileReader(file.getAbsolutePath());
+				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
 				lFileTwo.setText(file.getName());
 			}
 		}

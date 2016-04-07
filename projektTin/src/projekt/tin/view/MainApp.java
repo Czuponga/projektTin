@@ -24,13 +24,11 @@ import projekt.tin.controller.TextFileReader;
 public class MainApp extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private int timeCount;
-	private String timePath = "./resources/CZAS.TXT";
-	private String intPath = "./resources/INT.TXT";
 	private JMenuBar menuBar;
 	private JMenu menuHelp, menuAboutGNR;
 	private JMenuItem miAuthors, miAboutApp, miHowToUse,
 			miAboutTCBH, miAboutADPQH, miAboutADPFH, miAboutFDMP, miAboutFDMH;
+	private JButton bStart;
 	public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
 
 	public MainApp() {
@@ -40,22 +38,7 @@ public class MainApp extends JFrame implements ActionListener {
 				createAndShowGUI();
 			}
 		});
-		
-		
-		
 
-		TextFileReader fileReader = new TextFileReader(timePath);
-		timeCount = fileReader.countFileLines();
-		fileReader.setPath(intPath);
-		DaysGenerator days = new DaysGenerator();
-		List<Double> firstDay = new ArrayList<>();
-		thirtyDaysCallsInQuarters = days.generateDays(fileReader
-				.numberOfCallsInEachMinute());
-		System.out.println(thirtyDaysCallsInQuarters.size());
-		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
-			System.out.println(thirtyDaysCallsInQuarters.get(i).size());
-		}
-	
 
 	}
 
@@ -73,6 +56,8 @@ public class MainApp extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);
+		
+		bStart = new JButton("Uruchom program");
 	
 		menuBar = new JMenuBar();
 		menuHelp = new JMenu("Pomoc");
@@ -80,11 +65,11 @@ public class MainApp extends JFrame implements ActionListener {
 		miAboutApp = new JMenuItem("O programie");
 		miHowToUse = new JMenuItem("Jak korzystaæ");
 		miAuthors = new JMenuItem("Autorzy");
-		miAboutADPFH = new JMenuItem("O ADPFH");
-		miAboutADPQH = new JMenuItem("O ADPQH");
-		miAboutFDMH = new JMenuItem("O FDMH");
-		miAboutFDMP = new JMenuItem("O FDMP");
-		miAboutTCBH = new JMenuItem("O TCBH");
+		miAboutADPFH = new JMenuItem("O metodzie ADPFH");
+		miAboutADPQH = new JMenuItem("O metodzie ADPQH");
+		miAboutFDMH = new JMenuItem("O metodzie FDMH");
+		miAboutFDMP = new JMenuItem("O metodzie FDMP");
+		miAboutTCBH = new JMenuItem("O metodzie TCBH");
 
 		setJMenuBar(menuBar);
 		menuBar.add(Box.createHorizontalGlue());
@@ -109,21 +94,22 @@ public class MainApp extends JFrame implements ActionListener {
 		miAboutFDMP.addActionListener(this);
 		miAboutTCBH.addActionListener(this);
 		
+		bStart.addActionListener(this);
+		bStart.setEnabled(false);
+		
 		getContentPane().add(new MainOptionsPanel(), BorderLayout.WEST);
 		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
-		getContentPane().add(new JButton("Uruchom program"), BorderLayout.SOUTH);
+		getContentPane().add(bStart, BorderLayout.SOUTH);
 		pack();
-	}
-
-	public static void main(String[] args) {
-		
-		new MainApp();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
-		if (src == miAboutApp) {
+		if(src == bStart){
+			
+		}
+		else if (src == miAboutApp) {
 			String message = "Ten program wizualizuje ró¿ne metody wyznaczania Godziny Najwiêkszego Ruchu. Rysuje równie¿ wykresy.";
 			JOptionPane.showMessageDialog(null, message);
 		}
@@ -144,5 +130,11 @@ public class MainApp extends JFrame implements ActionListener {
 		}
 
 	}
+	
+public static void main(String[] args) {
+		
+		new MainApp();
+	}
+
 
 }

@@ -21,6 +21,10 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
 	public AdditionalOptionsPanel() {
 		super(new GridBagLayout());
+		createAndShowComponents();
+	}
+
+	public void createAndShowComponents(){
 		setPreferredSize(new Dimension(250, 300));
 		GridBagConstraints gbc = new GridBagConstraints();
 
@@ -53,10 +57,7 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		add(sliderSimulationSpeed, gbc);
-		;
-
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if (checkboxSimulation.isSelected()) {

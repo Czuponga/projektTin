@@ -14,7 +14,6 @@ public class TextFileReader {
 	private String path;
 	private FileInputStream input = null;
 	private BufferedReader br;
-	private int numberOfCallsInDay = 0;
 
 	public TextFileReader(String path) {
 		this.path = path;
@@ -52,13 +51,12 @@ public class TextFileReader {
 		catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
-		numberOfCallsInDay = linesCounter;
 		return linesCounter;
 	}
 
 	// zwraca listê której indexy s¹ numerami kwadransów, wartoœci iloœci¹
 	// wywo³añ w kwadransach
-	public List<Double> numberOfCallsInEachMinute() {
+	public List<Double> numberOfCallsInEachQuarter(int numberOfCallsInDay) {
 		int minute = 0;
 		double value = 0;
 		double tempValue = 0;
