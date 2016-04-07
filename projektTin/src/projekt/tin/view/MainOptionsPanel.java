@@ -21,9 +21,8 @@ import javax.swing.JRadioButton;
 
 import projekt.tin.controller.TextFileReader;
 
+@SuppressWarnings("serial")
 public class MainOptionsPanel extends JPanel implements ActionListener {
-
-	private static final long serialVersionUID = 1L;
 
 	private JLabel lFileOne, lFileTwo;
 	private JButton bFileOne, bFileTwo;

@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
+@SuppressWarnings("serial")
 public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	private JCheckBox checkboxChart, checkboxSimulation;
 	private JSlider sliderSimulationSpeed;
 

@@ -5,12 +5,8 @@ import java.util.List;
 
 public class GNR {
 
-//	private int firstQuarterOfGNR;
-//	private int callsInGNR;
-	private List<Double> averagedDay;
-
-	public void averageDay(List<List> thirtyDaysCallsInQuarters) {
-		// List<Double> averagedDay = new ArrayList<>();
+	public List<Double> averageDay(List<List> thirtyDaysCallsInQuarters) {
+		List<Double> averagedDay = new ArrayList<>();
 		double sum = 0;
 		double average = 0;
 		for (int j = 0; j < thirtyDaysCallsInQuarters.get(0).size(); j++) {
@@ -21,6 +17,7 @@ public class GNR {
 			averagedDay.add(average);
 			sum = 0;
 		}
+		return averagedDay;
 	}
 	
 	public String findGNR(List<Double> oneDayCallsInQuarter){
@@ -49,8 +46,8 @@ public class GNR {
 
 	public String methodTCBH(List<List> thirtyDaysCallsInQuarters) {
 		String result;
-		averageDay(thirtyDaysCallsInQuarters);
-		result = findGNR(averagedDay);
+		List<Double> averagedDay = averageDay(thirtyDaysCallsInQuarters);
+		result = findGNR(averagedDay);	
 		
 		return result;
 	}

@@ -1,6 +1,8 @@
 package projekt.tin.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,13 +19,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import projekt.tin.controller.DaysGenerator;
-import projekt.tin.controller.GNR;
-import projekt.tin.controller.TextFileReader;
-
+@SuppressWarnings("serial")
 public class MainApp extends JFrame implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	private JMenuBar menuBar;
 	private JMenu menuHelp, menuAboutGNR;
 	private JMenuItem miAuthors, miAboutApp, miHowToUse,
@@ -56,6 +54,9 @@ public class MainApp extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);
+		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		
 		
 		bStart = new JButton("Uruchom program");
 	
@@ -101,8 +102,9 @@ public class MainApp extends JFrame implements ActionListener {
 		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
 		getContentPane().add(bStart, BorderLayout.SOUTH);
 		pack();
+		setLocation(dim.width/2 - this.getWidth()/2, dim.height/2 - this.getHeight()/2);
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
