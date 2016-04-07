@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import projekt.tin.controller.DaysGenerator;
+import projekt.tin.controller.GNR;
 import projekt.tin.controller.TextFileReader;
 
 public class MainApp extends JFrame implements ActionListener {
@@ -32,14 +34,15 @@ public class MainApp extends JFrame implements ActionListener {
 	public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
 
 	public MainApp() {
-		setTitle("GNR");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		createGUI();
-		setVisible(true);
-		setResizable(false);
-		getContentPane().add(new MainOptionsPanel(), BorderLayout.WEST);
-		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
-		pack();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				createAndShowGUI();
+			}
+		});
+		
+		
+		
 
 		TextFileReader fileReader = new TextFileReader(timePath);
 		timeCount = fileReader.countFileLines();
@@ -48,14 +51,15 @@ public class MainApp extends JFrame implements ActionListener {
 		List<Double> firstDay = new ArrayList<>();
 		thirtyDaysCallsInQuarters = days.generateDays(fileReader
 				.numberOfCallsInEachMinute());
+		System.out.println(thirtyDaysCallsInQuarters.size());
 		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
 			System.out.println(thirtyDaysCallsInQuarters.get(i).size());
 		}
-		// thirtyDaysCallsInQuarters.get(0).get()
+	
 
 	}
 
-	public void createGUI() {
+	public void createAndShowGUI() {
 		try {
 			UIManager
 					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -64,6 +68,12 @@ public class MainApp extends JFrame implements ActionListener {
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+		
+		setTitle("GNR");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+		setResizable(false);
+	
 		menuBar = new JMenuBar();
 		menuHelp = new JMenu("Pomoc");
 		menuAboutGNR = new JMenu("O GNR");
@@ -98,15 +108,16 @@ public class MainApp extends JFrame implements ActionListener {
 		miAboutFDMH.addActionListener(this); 
 		miAboutFDMP.addActionListener(this);
 		miAboutTCBH.addActionListener(this);
+		
+		getContentPane().add(new MainOptionsPanel(), BorderLayout.WEST);
+		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
+		getContentPane().add(new JButton("Uruchom program"), BorderLayout.SOUTH);
+		pack();
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MainApp();
-			}
-		});
-
+		
+		new MainApp();
 	}
 
 	@Override
@@ -121,11 +132,11 @@ public class MainApp extends JFrame implements ActionListener {
 //			JOptionPane.showMessageDialog(null, message);
 //		}
 		else if (src == miAuthors) {
-			String message = "Program stworzyli zajebiœci studenci 2 roku teleinformytyki Politechniki Wroc³awskiej. \n Jakub Parys i Adrian Kuliñski";
+			String message = "Program stworzyli studenci 2 roku teleinformytyki Politechniki Wroc³awskiej. \n Jakub Parys i Adrian Kuliñski";
 			JOptionPane.showMessageDialog(null, message);
 		}
 		else if (src == miHowToUse) {
-			String message = "Ma³y help dla ograniczonych gdzie maj¹ klikaæ";
+			String message = "Ma³y help dla u¿ytkowników gdzie maj¹ klikaæ";
 			JOptionPane.showMessageDialog(null, message);
 		}
 		else if(src == miAboutADPFH){

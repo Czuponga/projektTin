@@ -40,7 +40,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 
 		bFileTwo.setEnabled(false);
 
-		rbMethod1 = new JRadioButton("Metoda 1");
+		rbMethod1 = new JRadioButton("Metoda 1", true);
 		rbMethod2 = new JRadioButton("Metoda 2");
 		rbMethod3 = new JRadioButton("Metoda 3");
 		rbMethod4 = new JRadioButton("Metoda 4");

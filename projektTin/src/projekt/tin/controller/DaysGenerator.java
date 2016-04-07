@@ -7,10 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DaysGenerator {
 	public List<List> generateDays(List<Double> firstDay) {
 		int i;
-		double temp;
 		List<List> daysList = new ArrayList<>();
 		daysList.add(firstDay);
-		for (int j = 0; j < 28; j++) {
+		for (int j = 0; j < 29; j++) {
 			i = 1;
 			List<Double> list = new ArrayList<>();
 			for (double quarter : firstDay) {
