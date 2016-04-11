@@ -129,6 +129,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
 				lFileTwo.setText(file.getName());
+				System.out.println(oneDayCallsInQuarter.size());
 			}
 		}
 	}

@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import projekt.tin.view.MainApp;
+
 public class TextFileReader {
 	private String path;
 	private FileInputStream input = null;
@@ -90,6 +92,7 @@ public class TextFileReader {
 						whichStep = 0;
 				}
 			}
+			calls.add(value);
 			br.close();
 		}
 		catch (Exception e) {

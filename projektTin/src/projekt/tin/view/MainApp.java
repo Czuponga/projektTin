@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import projekt.tin.controller.GNR;
+
 @SuppressWarnings("serial")
 public class MainApp extends JFrame implements ActionListener {
 
@@ -36,7 +38,9 @@ public class MainApp extends JFrame implements ActionListener {
 				createAndShowGUI();
 			}
 		});
-
+		GNR gnr = new GNR();
+		
+		
 
 	}
 
