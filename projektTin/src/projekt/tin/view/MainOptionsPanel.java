@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.TextFileReader;
 
 @SuppressWarnings("serial")
@@ -29,7 +30,9 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 	private JRadioButton rbMethod1, rbMethod2, rbMethod3, rbMethod4;
 	private ButtonGroup bgMethodChooser;
 	private List<Double> oneDayCallsInQuarter;
-
+	private int numberOfCallsInDay;
+	public static int TCBH = 1, ADPQH = 2;
+	
 	public MainOptionsPanel() {
 		super(new GridBagLayout());
 		createAndShowComponents();
@@ -97,7 +100,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		add(rbMethod4, gbc);
 	}
 	
-	public boolean canStart(){
+	public boolean canGenerate(){
 		if(oneDayCallsInQuarter!=null){
 			return true;
 		}
@@ -106,10 +109,30 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	public List<List> getGeneratedDays(){
+		if(canGenerate()){
+			DaysGenerator daysGenerator = new DaysGenerator();
+			return daysGenerator.generateDays(oneDayCallsInQuarter);
+		}
+		else{
+			return new ArrayList<List>();
+		}
+	}
+	
+	public int getMethod(){
+		int result = 0;
+		if(rbMethod1.isSelected()){
+			result = TCBH;
+		}
+		else if(rbMethod2.isSelected()){
+			result = ADPQH;
+		}
+		return result;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
-		int numberOfCallsInDay = 0;
 		TextFileReader fileReader;
 		if (src == bFileOne) {
 			JFileChooser fileChooser = new JFileChooser();
@@ -123,13 +146,12 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		}
 		else if (src == bFileTwo) {
 			JFileChooser fileChooser = new JFileChooser();
-			//oneDayCallsInQuarter = new ArrayList<>();
+			oneDayCallsInQuarter = new ArrayList<>();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
 				lFileTwo.setText(file.getName());
-				System.out.println(oneDayCallsInQuarter.size());
 			}
 		}
 	}

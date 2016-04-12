@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.GNR;
 
 @SuppressWarnings("serial")
@@ -29,19 +30,16 @@ public class MainApp extends JFrame implements ActionListener {
 	private JMenuItem miAuthors, miAboutApp, miHowToUse,
 			miAboutTCBH, miAboutADPQH, miAboutADPFH, miAboutFDMP, miAboutFDMH;
 	private JButton bStart;
-	public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
+	private MainOptionsPanel mainOptionsPanel;
+	private AdditionalOptionsPanel additionalOptionsPanel;
+	//public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
 
 	public MainApp() {
-		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				createAndShowGUI();
 			}
 		});
-		GNR gnr = new GNR();
-		
-		
-
 	}
 
 	public void createAndShowGUI() {
@@ -100,10 +98,11 @@ public class MainApp extends JFrame implements ActionListener {
 		miAboutTCBH.addActionListener(this);
 		
 		bStart.addActionListener(this);
-		bStart.setEnabled(false);
 		
-		getContentPane().add(new MainOptionsPanel(), BorderLayout.WEST);
-		getContentPane().add(new AdditionalOptionsPanel(), BorderLayout.EAST);
+		mainOptionsPanel = new MainOptionsPanel();
+		additionalOptionsPanel = new AdditionalOptionsPanel();
+		getContentPane().add(mainOptionsPanel, BorderLayout.WEST);
+		getContentPane().add(additionalOptionsPanel, BorderLayout.EAST);
 		getContentPane().add(bStart, BorderLayout.SOUTH);
 		pack();
 		setLocation(dim.width/2 - this.getWidth()/2, dim.height/2 - this.getHeight()/2);
@@ -112,8 +111,17 @@ public class MainApp extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
+		
 		if(src == bStart){
-			
+			GNR gnr = new GNR();
+			if(mainOptionsPanel.getMethod() == MainOptionsPanel.TCBH){
+				gnr.methodTCBH(mainOptionsPanel.getGeneratedDays());
+				JOptionPane.showMessageDialog(null, gnr);
+			}
+			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
+				gnr.methodADPQH(mainOptionsPanel.getGeneratedDays());
+				JOptionPane.showMessageDialog(null, gnr);
+			}
 		}
 		else if (src == miAboutApp) {
 			String message = "Ten program wizualizuje ró¿ne metody wyznaczania Godziny Najwiêkszego Ruchu. Rysuje równie¿ wykresy.";

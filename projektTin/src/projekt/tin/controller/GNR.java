@@ -3,8 +3,6 @@ package projekt.tin.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import projekt.tin.view.MainApp;
-
 public class GNR {
 
 	/**
@@ -39,6 +37,39 @@ public class GNR {
 		hour = convertHour(firstQuarterIndex) + " - " + convertHour(firstQuarterIndex+4);
 	}
 
+	/**
+	 * metoda wyznaczajaca gnr za pomoca metody TCBH
+	 * 
+	 * @param thirtyDaysCallsInQuarters
+	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
+	 *            kolejnych kwadransach
+	 */
+	public void methodTCBH(List<List> thirtyDaysCallsInQuarters) {
+		findGNR(averageDay(thirtyDaysCallsInQuarters));
+		setHour(firstQuarterIndex);
+	}
+	
+
+	/**
+	 * metoda wyznaczajaca gnr za pomoca metody TCBH
+	 * 
+	 * @param thirtyDaysCallsInQuarters
+	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
+	 *            kolejnych kwadransach
+	 */
+	public void methodADPQH(List<List> thirtyDaysCallsInQuarters) {
+		List<Double> gnrInEachDay = new ArrayList<>();
+		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
+			findGNR(thirtyDaysCallsInQuarters.get(i));
+			gnrInEachDay.add(calls);
+		}
+		calls = averageGNR(gnrInEachDay);
+	}
+	
+	public void methodADPFH(List<List> thirtyDaysCallsInQuarters){
+		
+	}
+	
 	/**
 	 * metoda licz¹ca œredni dzieñ na podstawie danych z 30 dni
 	 * 
@@ -82,20 +113,10 @@ public class GNR {
 			}
 			sum = 0;
 		}
-		calls = max;
+		calls = max/4;
 	}
 
-	/**
-	 * metoda wyznaczajaca gnr za pomoca metody TCBH
-	 * 
-	 * @param thirtyDaysCallsInQuarters
-	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
-	 *            kolejnych kwadransach
-	 */
-	public void methodTCBH(List<List> thirtyDaysCallsInQuarters) {
-		List<Double> averagedDay = averageDay(thirtyDaysCallsInQuarters);
-		findGNR(averagedDay);
-	}
+	
 
 	/**
 	 * metoda uœrednia gnr'y z kilku dni
@@ -114,21 +135,6 @@ public class GNR {
 		return result;
 	}
 
-	/**
-	 * metoda wyznaczajaca gnr za pomoca metody TCBH
-	 * 
-	 * @param thirtyDaysCallsInQuarters
-	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
-	 *            kolejnych kwadransach
-	 */
-	public void methodADPQH(List<List> thirtyDaysCallsInQuarters) {
-		List<Double> gnrInEachDay = new ArrayList<>();
-		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
-			findGNR(thirtyDaysCallsInQuarters.get(i));
-			gnrInEachDay.add(calls);
-		}
-		calls = averageGNR(gnrInEachDay);
-	}
 
 	/**
 	 * metoda konwertuje godzine do formatu 00:00
@@ -156,6 +162,10 @@ public class GNR {
 			minutesString = String.valueOf(minutesInt);
 		}
 		return hourString+":"+minutesString;
+	}
+	
+	public String toString(){
+		return "Godzina najwiêkszego ruchu: "+getHour()+"\nŒrednie natê¿enie ruchu w tym czasie wynosi: "+getCalls();
 	}
 
 	public static void main(String[] args) {
