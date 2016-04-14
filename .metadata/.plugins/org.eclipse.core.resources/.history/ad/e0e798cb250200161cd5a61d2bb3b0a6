@@ -59,8 +59,8 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		bFileTwo.setEnabled(false);
 
 		rbMethod1 = new JRadioButton("Metoda TCBH", true);
-		rbMethod2 = new JRadioButton("Metoda ADPQH");
-		rbMethod3 = new JRadioButton("Metoda ADPFH");
+		rbMethod2 = new JRadioButton("Metoda 2");
+		rbMethod3 = new JRadioButton("Metoda 3");
 		rbMethod4 = new JRadioButton("Metoda 4");
 
 		bgMethodChooser = new ButtonGroup();
@@ -141,6 +141,12 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		Object src = evt.getSource();
 		TextFileReader fileReader;
 		if (src == bFileOne) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			} catch (ClassNotFoundException | InstantiationException
+					| IllegalAccessException | UnsupportedLookAndFeelException e) {
+				e.printStackTrace();
+			}
 			JFileChooser fileChooser = new JFileChooser("./resources/");
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -148,6 +154,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 				bFileTwo.setEnabled(true);
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				numberOfCallsInDay = fileReader.countFileLines();
+				System.out.println(bStart);
 			}
 		}
 		else if (src == bFileTwo) {

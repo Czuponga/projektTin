@@ -59,8 +59,8 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		bFileTwo.setEnabled(false);
 
 		rbMethod1 = new JRadioButton("Metoda TCBH", true);
-		rbMethod2 = new JRadioButton("Metoda ADPQH");
-		rbMethod3 = new JRadioButton("Metoda ADPFH");
+		rbMethod2 = new JRadioButton("Metoda 2");
+		rbMethod3 = new JRadioButton("Metoda 3");
 		rbMethod4 = new JRadioButton("Metoda 4");
 
 		bgMethodChooser = new ButtonGroup();
@@ -141,8 +141,16 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		Object src = evt.getSource();
 		TextFileReader fileReader;
 		if (src == bFileOne) {
-			JFileChooser fileChooser = new JFileChooser("./resources/");
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			} catch (ClassNotFoundException | InstantiationException
+					| IllegalAccessException | UnsupportedLookAndFeelException e) {
+				e.printStackTrace();
+			}
+			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				String userhome = System.getProperty("user.desktop");
+				fileChooser.setCurrentDirectory(System.getProperty("user.desktop"));
 				File file = fileChooser.getSelectedFile();
 				lFileOne.setText(file.getName());
 				bFileTwo.setEnabled(true);
@@ -151,7 +159,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 			}
 		}
 		else if (src == bFileTwo) {
-			JFileChooser fileChooser = new JFileChooser("./resources/");
+			JFileChooser fileChooser = new JFileChooser();
 			oneDayCallsInQuarter = new ArrayList<>();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();

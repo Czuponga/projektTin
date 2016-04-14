@@ -113,7 +113,7 @@ public class GNR {
 			}
 			sum = 0;
 		}
-		calls = max;
+		calls = max/4;
 	}
 
 	
