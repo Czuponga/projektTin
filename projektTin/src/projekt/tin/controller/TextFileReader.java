@@ -51,7 +51,7 @@ public class TextFileReader {
 			br.close();
 		}
 		catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e);
+			return 0;
 		}
 		return linesCounter;
 	}
@@ -96,7 +96,7 @@ public class TextFileReader {
 			br.close();
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e);
+			return null;
 		}
 		return calls;
 	}

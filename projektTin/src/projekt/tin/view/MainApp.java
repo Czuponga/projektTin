@@ -121,6 +121,9 @@ public class MainApp extends JFrame implements ActionListener {
 				gnr.methodADPQH(mainOptionsPanel.getGeneratedDays());
 				JOptionPane.showMessageDialog(null, gnr);
 			}
+			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPFH){
+				//gnr.methodADPFH(thirtyDaysCallsInHour);
+			}
 		}
 		else if (src == miAboutApp) {
 			String message = "Ten program wizualizuje ró¿ne metody wyznaczania Godziny Najwiêkszego Ruchu. Rysuje równie¿ wykresy.";

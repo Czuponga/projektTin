@@ -1,6 +1,7 @@
 package projekt.tin.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GNR {
@@ -66,8 +67,13 @@ public class GNR {
 		calls = averageGNR(gnrInEachDay);
 	}
 	
-	public void methodADPFH(List<List> thirtyDaysCallsInQuarters){
-		
+	public void methodADPFH(List<List> thirtyDaysCallsInHour){
+		List<Double> gnrInEachDay = new ArrayList<>();
+		for(int i = 0; i<thirtyDaysCallsInHour.size(); i++){
+			findGNRHour(thirtyDaysCallsInHour.get(i));
+			gnrInEachDay.add(calls);
+		}
+		calls = averageGNR(gnrInEachDay);
 	}
 	
 	/**
@@ -113,9 +119,24 @@ public class GNR {
 			}
 			sum = 0;
 		}
-		calls = max/4;
+		calls = max;
 	}
 
+	private void findGNRHour(List<Double> oneDayCallsInHour){
+		double max = 0;
+		firstQuarterIndex = 0;
+		Collections.sort(oneDayCallsInHour);
+		Collections.reverse(oneDayCallsInHour);
+//		for (int i = 0; i < oneDayCallsInHour.size(); i++) {
+//			
+//			if(oneDayCallsInHour.get(i)>max){
+//				max=oneDayCallsInHour.get(i);
+//				firstQuarterIndex = i;
+//			}
+//		}
+//		calls = max;
+		calls = oneDayCallsInHour.get(0);
+	}
 	
 
 	/**

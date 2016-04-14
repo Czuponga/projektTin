@@ -16,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
@@ -32,25 +33,26 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 	private JRadioButton rbMethod1, rbMethod2, rbMethod3, rbMethod4;
 	private ButtonGroup bgMethodChooser;
 	private List<Double> oneDayCallsInQuarter;
+	private List<Double> oneDayCallsInHour;
 	private int numberOfCallsInDay;
-	public static int TCBH = 1, ADPQH = 2;
+	public static int TCBH = 1, ADPQH = 2, ADPFH = 3;
 	private JButton bStart;
-	
+
 	public MainOptionsPanel() {
 		super(new GridBagLayout());
 		createAndShowComponents();
 	}
 
-	public void createAndShowComponents(){
+	public void createAndShowComponents() {
 		setVisible(true);
 		setPreferredSize(new Dimension(250, 300));
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		setBorder(BorderFactory.createTitledBorder("Opcje g³owne"));
-		
+
 		bStart = new JButton("Uruchom program");
 		bStart.setEnabled(false);
-		
+
 		lFileOne = new JLabel("Wybierz pierwszy plik");
 		lFileTwo = new JLabel("Wybierz drugi plik");
 		bFileOne = new JButton("...");
@@ -105,66 +107,85 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 
 		add(rbMethod4, gbc);
 	}
-	
-	public boolean canGenerate(){
-		if(oneDayCallsInQuarter!=null){
+
+	public boolean canGenerate() {
+		if (oneDayCallsInQuarter != null) {
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-	
-	public List<List> getGeneratedDays(){
-		if(canGenerate()){
+
+	public List<List> getGeneratedDays() {
+		if (canGenerate()) {
 			DaysGenerator daysGenerator = new DaysGenerator();
 			return daysGenerator.generateDays(oneDayCallsInQuarter);
 		}
-		else{
+		else {
 			return new ArrayList<List>();
 		}
 	}
-	
-	public int getMethod(){
+
+	public int getMethod() {
 		int result = 0;
-		if(rbMethod1.isSelected()){
+		if (rbMethod1.isSelected()) {
 			result = TCBH;
 		}
-		else if(rbMethod2.isSelected()){
+		else if (rbMethod2.isSelected()) {
 			result = ADPQH;
+		}
+		else if(rbMethod3.isSelected()){
+			result = ADPFH;
 		}
 		return result;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
 		TextFileReader fileReader;
 		if (src == bFileOne) {
-			try {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			} catch (ClassNotFoundException | InstantiationException
-					| IllegalAccessException | UnsupportedLookAndFeelException e) {
-				e.printStackTrace();
-			}
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = new JFileChooser("./resources/");
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
-				lFileOne.setText(file.getName());
-				bFileTwo.setEnabled(true);
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				numberOfCallsInDay = fileReader.countFileLines();
+				if(numberOfCallsInDay==0){
+					JOptionPane.showMessageDialog(null, "Wybrano niepoprawny plik");
+				}
+				else{
+					lFileOne.setText(file.getName());
+					bFileTwo.setEnabled(true);
+				}
 			}
 		}
 		else if (src == bFileTwo) {
-			JFileChooser fileChooser = new JFileChooser();
+			double sum = 0;
+			JFileChooser fileChooser = new JFileChooser("./resources/");
 			oneDayCallsInQuarter = new ArrayList<>();
+			oneDayCallsInHour = new ArrayList<>();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
-				lFileTwo.setText(file.getName());
-				bStart.setEnabled(true);
+				for (int i = 0; i<=oneDayCallsInQuarter.size()-4;i+=4){
+					for(int j = i; j<i + 4; j++){
+						sum += oneDayCallsInQuarter.get(j);
+					}
+					oneDayCallsInHour.add(sum);
+					sum=0;
+				}
+				System.out.println(oneDayCallsInHour.size());
+				System.out.println(oneDayCallsInHour);
+				if (oneDayCallsInQuarter == null) {
+					JOptionPane.showMessageDialog(null, "Wybrano niepoprawny plik");
+				}
+				else {
+					lFileTwo.setText(file.getName());
+					bStart.setEnabled(true);
+				}
+				
 			}
 		}
 	}
