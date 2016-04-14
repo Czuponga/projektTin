@@ -1,5 +1,6 @@
 package projekt.tin.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,9 +16,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.TextFileReader;
@@ -32,6 +34,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 	private List<Double> oneDayCallsInQuarter;
 	private int numberOfCallsInDay;
 	public static int TCBH = 1, ADPQH = 2;
+	private JButton bStart;
 	
 	public MainOptionsPanel() {
 		super(new GridBagLayout());
@@ -44,7 +47,10 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		setBorder(BorderFactory.createTitledBorder("Opcje g³owne"));
-
+		
+		bStart = new JButton("Uruchom program");
+		bStart.setEnabled(false);
+		
 		lFileOne = new JLabel("Wybierz pierwszy plik");
 		lFileTwo = new JLabel("Wybierz drugi plik");
 		bFileOne = new JButton("...");
@@ -135,6 +141,12 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		Object src = evt.getSource();
 		TextFileReader fileReader;
 		if (src == bFileOne) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			} catch (ClassNotFoundException | InstantiationException
+					| IllegalAccessException | UnsupportedLookAndFeelException e) {
+				e.printStackTrace();
+			}
 			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -152,7 +164,16 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 				fileReader = new TextFileReader(file.getAbsolutePath());
 				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
 				lFileTwo.setText(file.getName());
+				bStart.setEnabled(true);
 			}
 		}
+	}
+
+	public JButton getbStart() {
+		return bStart;
+	}
+
+	public void setbStart(JButton bStart) {
+		this.bStart = bStart;
 	}
 }

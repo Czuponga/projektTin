@@ -18,6 +18,7 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
 	private JCheckBox checkboxChart, checkboxSimulation;
 	private JSlider sliderSimulationSpeed;
+	private JLabel simulationSpeedLabel;
 
 	public AdditionalOptionsPanel() {
 		super(new GridBagLayout());
@@ -35,7 +36,10 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
 		sliderSimulationSpeed = new JSlider();
 		sliderSimulationSpeed.setEnabled(false);
+		
+		simulationSpeedLabel = new JLabel("50");
 
+		sliderSimulationSpeed.addChangeListener(new BoundedChangeListener(simulationSpeedLabel));
 		checkboxSimulation.addActionListener(this);
 
 		/*
@@ -57,6 +61,8 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		add(sliderSimulationSpeed, gbc);
+		gbc.gridy++;
+		add(simulationSpeedLabel, gbc);
 	}
 	@Override
 	public void actionPerformed(ActionEvent evt) {
