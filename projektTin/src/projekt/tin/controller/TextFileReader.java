@@ -50,8 +50,8 @@ public class TextFileReader {
 			}
 			br.close();
 		}
-		catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e);
+		catch (Exception e) {
+			return 0;
 		}
 		return linesCounter;
 	}
@@ -96,33 +96,8 @@ public class TextFileReader {
 			br.close();
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e);
+			return null;
 		}
 		return calls;
 	}
-/*	
-	public static void main(String[] args) {
-			int lines;
-			DaysGenerator daysGenerator = new DaysGenerator();
-			TextFileReader textFileReader = new TextFileReader("./resources/CZAS.txt");
-			lines = textFileReader.countFileLines();
-			textFileReader.setPath("./resources/INT.txt");
-			List<Double>oneDayCallsInQuarter = new ArrayList<>();
-			oneDayCallsInQuarter = textFileReader.numberOfCallsInEachQuarter(lines);
-//			System.out.println(oneDayCallsInQuarter.size());
-//			for(int i = 0;i<oneDayCallsInQuarter.size();i++){
-//				System.out.println(i + " " + oneDayCallsInQuarter.get(i));
-//			}
-			List<List> thirtyDaysCallsInQuarter = new ArrayList<>();
-			thirtyDaysCallsInQuarter = daysGenerator.generateDays(oneDayCallsInQuarter);
-//			for (int i = 0; i<thirtyDaysCallsInQuarter.size(); i++){
-//				System.out.println(thirtyDaysCallsInQuarter.get(i));
-//			}
-			GNR gnr = new GNR();
-			gnr.methodTCBH(thirtyDaysCallsInQuarter);
-			System.out.println(gnr);
-		}
-*/
-
-
 }

@@ -33,7 +33,6 @@ public class MainApp extends JFrame implements ActionListener {
 	private JButton bStart;
 	private MainOptionsPanel mainOptionsPanel;
 	private AdditionalOptionsPanel additionalOptionsPanel;
-	//public List<List> thirtyDaysCallsInQuarters = new ArrayList<>();
 
 	public MainApp() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -114,11 +113,15 @@ public class MainApp extends JFrame implements ActionListener {
 		if(src == bStart){
 			GNR gnr = new GNR();
 			if(mainOptionsPanel.getMethod() == MainOptionsPanel.TCBH){
-				gnr.methodTCBH(mainOptionsPanel.getGeneratedDays());
+				gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
 				JOptionPane.showMessageDialog(null, gnr);
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
-				gnr.methodADPQH(mainOptionsPanel.getGeneratedDays());
+				gnr.methodADPQH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
+				JOptionPane.showMessageDialog(null, gnr);
+			}
+			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPFH){
+				gnr.methodADPFH(mainOptionsPanel.getThirtyDaysCallsInHour());
 				JOptionPane.showMessageDialog(null, gnr);
 			}
 		}

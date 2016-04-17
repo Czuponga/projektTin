@@ -1,6 +1,7 @@
 package projekt.tin.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GNR {
@@ -45,7 +46,7 @@ public class GNR {
 	 *            kolejnych kwadransach
 	 */
 	public void methodTCBH(List<List> thirtyDaysCallsInQuarters) {
-		findGNR(averageDay(thirtyDaysCallsInQuarters));
+		findGNRQuarter(averageDay(thirtyDaysCallsInQuarters));
 		setHour(firstQuarterIndex);
 	}
 	
@@ -60,14 +61,19 @@ public class GNR {
 	public void methodADPQH(List<List> thirtyDaysCallsInQuarters) {
 		List<Double> gnrInEachDay = new ArrayList<>();
 		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
-			findGNR(thirtyDaysCallsInQuarters.get(i));
+			findGNRQuarter(thirtyDaysCallsInQuarters.get(i));
 			gnrInEachDay.add(calls);
 		}
 		calls = averageGNR(gnrInEachDay);
 	}
 	
-	public void methodADPFH(List<List> thirtyDaysCallsInQuarters){
-		
+	public void methodADPFH(List<List> thirtyDaysCallsInHour){
+		List<Double> gnrInEachDay = new ArrayList<>();
+		for(int i = 0; i<thirtyDaysCallsInHour.size(); i++){
+			findGNRHour(thirtyDaysCallsInHour.get(i));
+			gnrInEachDay.add(calls);
+		}
+		calls = averageGNR(gnrInEachDay);
 	}
 	
 	/**
@@ -99,7 +105,7 @@ public class GNR {
 	 * @param oneDayCallsInQuarter
 	 *            Lista iloœci wywo³añ w kolejnych kwadransach
 	 */
-	private void findGNR(List<Double> oneDayCallsInQuarter) {
+	private void findGNRQuarter(List<Double> oneDayCallsInQuarter) {
 		double max = 0;
 		double sum = 0;
 		firstQuarterIndex = 0;
@@ -116,6 +122,14 @@ public class GNR {
 		calls = max;
 	}
 
+	private void findGNRHour(List<Double> oneDayCallsInHour){
+		double max = 0;
+		firstQuarterIndex = 0;
+		Collections.sort(oneDayCallsInHour);
+		Collections.reverse(oneDayCallsInHour);
+		calls = oneDayCallsInHour.get(0);
+	}
+	
 	
 
 	/**
@@ -165,15 +179,12 @@ public class GNR {
 	}
 	
 	public String toString(){
-		return "Godzina najwiêkszego ruchu: "+getHour()+"\nŒrednie natê¿enie ruchu w tym czasie wynosi: "+getCalls();
-	}
-
-	public static void main(String[] args) {
-		GNR gnr = new GNR();
-		for (int i = 0; i < 96; i++) {
-			gnr.setHour(i);
-			System.out.println(i + " " + gnr.getHour());
+		if(getHour()!=null){
+			return "Godzina najwiêkszego ruchu: "+getHour()+"\nŒrednie natê¿enie ruchu: "+getCalls();
 		}
-
+		else{
+			return "\nŒrednie natê¿enie ruchu: "+getCalls();
+		}
+		
 	}
 }
