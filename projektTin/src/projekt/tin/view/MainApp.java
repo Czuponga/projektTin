@@ -1,16 +1,14 @@
 package projekt.tin.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,7 +18,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.GNR;
 
 @SuppressWarnings("serial")
@@ -115,6 +112,11 @@ public class MainApp extends JFrame implements ActionListener {
 			if(mainOptionsPanel.getMethod() == MainOptionsPanel.TCBH){
 				gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
 				JOptionPane.showMessageDialog(null, gnr);
+				TimeChart timeChart = new TimeChart();
+				JDialog chart = new JDialog();
+				chart.setVisible(true);
+				chart.add(timeChart.addData(mainOptionsPanel.getOneDayCallsInQuarter()));
+				chart.pack();
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
 				gnr.methodADPQH(mainOptionsPanel.getThirtyDaysCallsInQuarter());

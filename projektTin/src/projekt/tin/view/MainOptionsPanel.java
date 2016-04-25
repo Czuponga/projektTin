@@ -192,8 +192,7 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				fileReader = new TextFileReader(file.getAbsolutePath());
-				oneDayCallsInQuarter = fileReader
-						.numberOfCallsInEachQuarter(numberOfCallsInDay);
+				oneDayCallsInQuarter = fileReader.numberOfCallsInEachQuarter(numberOfCallsInDay);
 
 				if (oneDayCallsInQuarter == null) {
 					JOptionPane.showMessageDialog(null,
@@ -208,6 +207,10 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 
 			}
 		}
+	}
+
+	public List<Double> getOneDayCallsInQuarter() {
+		return oneDayCallsInQuarter;
 	}
 
 
