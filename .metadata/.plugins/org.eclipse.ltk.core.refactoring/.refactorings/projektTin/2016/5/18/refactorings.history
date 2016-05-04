@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;save&apos; in &apos;projekt.tin.view.MainApp.actionPerformed(...)&apos; to &apos;saveButton&apos;&#x0D;&#x0A;- Original project: &apos;projektTin&apos;&#x0D;&#x0A;- Original element: &apos;projekt.tin.view.MainApp.actionPerformed(ActionEvent).save&apos;&#x0D;&#x0A;- Renamed element: &apos;save&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;save&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;projekt.tin.view{MainApp.java[MainApp~actionPerformed~QActionEvent;@save!3912!3953!3919!3922!QButton;!0!false" name="saveButton" references="true" stamp="1462390476355" version="1.0"/>
+</session>

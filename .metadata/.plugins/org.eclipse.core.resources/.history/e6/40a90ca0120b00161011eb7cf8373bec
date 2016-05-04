@@ -1,0 +1,32 @@
+package projekt.tin.view;
+
+import java.util.List;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+
+public class FxChart {
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public JFXPanel createScene(List<Double> oneDayCallsInQuarter) {
+		final NumberAxis xAxis = new NumberAxis(0, 96, 1);
+        final NumberAxis yAxis = new NumberAxis();
+        final AreaChart<Number,Number> ac = new AreaChart<Number,Number>(xAxis,yAxis);
+        ac.setTitle("Natê¿enie ruchu");
+ 
+        final JFXPanel fxPanel = new JFXPanel();
+        XYChart.Series dataSeries= new XYChart.Series();
+        int i = 0;
+        for (Double myQuarter : oneDayCallsInQuarter) {
+        	dataSeries.getData().add(new XYChart.Data(i,myQuarter));
+        	 Scene scene  = new Scene(ac,800,600);
+             ac.getData().addAll(dataSeries);
+             fxPanel.setScene(scene);
+        }
+        
+		return fxPanel;
+	}
+}

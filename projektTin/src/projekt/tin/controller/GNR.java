@@ -21,22 +21,6 @@ public class GNR {
 	 */
 	private double calls;
 
-	// gettery i settery
-	public int getFirstQuarterIndex() {
-		return firstQuarterIndex;
-	}
-
-	public double getCalls() {
-		return calls;
-	}
-
-	public String getHour() {
-		return hour;
-	}
-	
-	public void setHour(int firstQuarterIndex) {
-		hour = convertHour(firstQuarterIndex) + " - " + convertHour(firstQuarterIndex+4);
-	}
 
 	/**
 	 * metoda wyznaczajaca gnr za pomoca metody TCBH
@@ -186,5 +170,21 @@ public class GNR {
 			return "\nŒrednie natê¿enie ruchu: "+getCalls();
 		}
 		
+	}
+
+	public int getFirstQuarterIndex() {
+		return firstQuarterIndex;
+	}
+	
+	public double getCalls() {
+		return calls;
+	}
+	
+	public String getHour() {
+		return hour;
+	}
+	
+	public void setHour(int firstQuarterIndex) {
+		hour = convertHour(firstQuarterIndex) + " - " + convertHour(firstQuarterIndex+4);
 	}
 }

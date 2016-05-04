@@ -12,4 +12,9 @@
 <fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="com.sun.prism.paint.Paint"/>
+<fullyQualifiedTypeName name="java.awt.Paint"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartMouseListener"/>
+<fullyQualifiedTypeName name="javafx.scene.chart.NumberAxis"/>
+<fullyQualifiedTypeName name="javafx.scene.chart.XYChart.Data"/>
 </qualifiedTypeNameHistroy>

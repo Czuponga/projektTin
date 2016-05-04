@@ -5,6 +5,8 @@ import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -27,11 +29,27 @@ public class TimeChart {
 				minute += 15;
 			}
 		}
-		
+
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(quartersSeries);
-		
+
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("Natê¿enie ruchu", "Godzina", "Natê¿enie", dataset);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		
+		return chartPanel;
+	}
+	
+	public ChartPanel barChart(List<Double> callsList) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		int day = 1;
+		
+		for (Double myDay : callsList) {
+			dataset.setValue(myDay, "Natê¿enie", Integer.toString(day));
+		}
+		
+		JFreeChart chart = ChartFactory.createBarChart("Comparison between Salesman", "Dzieñ", "Natê¿enie", dataset, PlotOrientation.VERTICAL,
+				false, true, false);
+		
 		ChartPanel chartPanel = new ChartPanel(chart);
 		
 		return chartPanel;
