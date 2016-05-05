@@ -47,7 +47,7 @@ public class TimeChart {
 			dataset.setValue(myDay, "Natê¿enie", Integer.toString(day));
 		}
 		
-		JFreeChart chart = ChartFactory.createBarChart("Natê¿enie ruchu", "Dzieñ", "Natê¿enie", dataset, PlotOrientation.VERTICAL,
+		JFreeChart chart = ChartFactory.createBarChart("Comparison between Salesman", "Dzieñ", "Natê¿enie", dataset, PlotOrientation.VERTICAL,
 				false, true, false);
 		
 		ChartPanel chartPanel = new ChartPanel(chart);

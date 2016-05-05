@@ -120,7 +120,53 @@ public class MainApp extends JFrame implements ActionListener {
 		if(src == bStart){
 			GNR gnr = new GNR();
 			if(mainOptionsPanel.getMethod() == MainOptionsPanel.TCBH){
-				createTimeChartWindow(gnr);
+				gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
+				TimeChart timeChart = new TimeChart();
+				
+				JFrame chart = new JFrame();
+				chart.setLayout(new GridBagLayout());
+				GridBagConstraints gbc = new GridBagConstraints();
+				Button saveButton = new Button("Zapisz wykres");
+				
+				Date date = new Date() ;
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+				
+				ChartPanel chartPanel = timeChart.addData(mainOptionsPanel.getOneDayCallsInQuarter());
+				
+				saveButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						try {
+							ChartUtilities.saveChartAsJPEG(new File("charts/chart" + dateFormat.format(date) + ".jpg"), chartPanel.getChart(), 1000, 600);
+							JOptionPane.showMessageDialog(null, "Zapisano!");
+						} catch (IOException ex) {
+							System.err.println(ex);
+						}
+					}
+				});
+				
+				Button okButton = new Button("Ok");
+				
+				okButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						chart.dispose();
+					}
+				});
+				
+				gbc.insets = new Insets(10, 0, 10, 0);
+				gbc.anchor = GridBagConstraints.WEST;
+				gbc.gridx = 0;
+				gbc.gridy = 0;
+				chart.add(new JLabel(gnr.toString()), gbc);
+				gbc.gridy++;
+				chart.add(chartPanel, gbc);
+				gbc.gridy++;
+				chart.add(saveButton, gbc);
+				gbc.gridx++;
+				chart.add(okButton, gbc);
+				chart.setVisible(true);
+				chart.pack();
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
 				gnr.methodADPQH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
@@ -151,56 +197,6 @@ public class MainApp extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "ADPFH");
 		}
 
-	}
-
-	private void createTimeChartWindow(GNR gnr) {
-		gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
-		TimeChart timeChart = new TimeChart();
-		
-		JFrame chart = new JFrame();
-		chart.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		Button saveButton = new Button("Zapisz wykres");
-		
-		Date date = new Date() ;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
-		
-		ChartPanel chartPanel = timeChart.addData(mainOptionsPanel.getOneDayCallsInQuarter());
-		
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ChartUtilities.saveChartAsJPEG(new File("charts/chart" + dateFormat.format(date) + ".jpg"), chartPanel.getChart(), 1000, 600);
-					JOptionPane.showMessageDialog(null, "Zapisano!");
-				} catch (IOException ex) {
-					System.err.println(ex);
-				}
-			}
-		});
-		
-		Button okButton = new Button("Ok");
-		
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				chart.dispose();
-			}
-		});
-		
-		gbc.insets = new Insets(10, 0, 10, 0);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		chart.add(new JLabel(gnr.toString()), gbc);
-		gbc.gridy++;
-		chart.add(chartPanel, gbc);
-		gbc.gridy++;
-		chart.add(saveButton, gbc);
-		gbc.gridx++;
-		chart.add(okButton, gbc);
-		chart.setVisible(true);
-		chart.pack();
 	}
 	
 	public void enableStartButton() {
