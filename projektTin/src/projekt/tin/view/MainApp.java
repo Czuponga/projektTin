@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -123,12 +125,10 @@ public class MainApp extends JFrame implements ActionListener {
 				createTimeChartWindow(gnr);
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
-				gnr.methodADPQH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
-				JOptionPane.showMessageDialog(null, gnr);
+				createBarChartWindow(gnr);
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPFH){
-				gnr.methodADPFH(mainOptionsPanel.getThirtyDaysCallsInHour());
-				JOptionPane.showMessageDialog(null, gnr);
+				createBarChartWindowADPFH(gnr);
 			}
 		}
 		else if (src == miAboutApp) {
@@ -151,6 +151,117 @@ public class MainApp extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "ADPFH");
 		}
 
+	}
+	
+	private void createBarChartWindowADPFH(GNR gnr) {
+		List<Double> gnrInEachDay = new ArrayList<>();
+		
+		gnrInEachDay = gnr.methodADPFH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
+		System.out.println(gnrInEachDay.size());
+		TimeChart timeChart = new TimeChart();
+		
+		JFrame chart = new JFrame();
+		chart.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		Button saveButton = new Button("Zapisz wykres");
+		
+		Date date = new Date() ;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+		
+		ChartPanel chartPanel = timeChart.barChart(gnrInEachDay);
+		
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ChartUtilities.saveChartAsJPEG(new File("charts/chart" + dateFormat.format(date) + ".jpg"), chartPanel.getChart(), 1000, 600);
+					JOptionPane.showMessageDialog(null, "Zapisano!");
+				} catch (IOException ex) {
+					System.err.println(ex);
+				}
+			}
+		});
+		
+		Button okButton = new Button("Ok");
+		
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chart.dispose();
+			}
+		});
+		
+		gbc.insets = new Insets(10, 0, 10, 0);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		chart.add(new JLabel(gnr.toString()), gbc);
+		gbc.gridy++;
+		chart.add(chartPanel, gbc);
+		gbc.gridy++;
+		chart.add(saveButton, gbc);
+		gbc.gridx++;
+		chart.add(okButton, gbc);
+		chart.setVisible(true);
+		chart.pack();
+		
+		return;
+	}
+	
+	
+	private void createBarChartWindow(GNR gnr) {
+		List<Double> gnrInEachDay = new ArrayList<>();
+		
+		gnrInEachDay = gnr.methodADPQH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
+		System.out.println(gnrInEachDay.size());
+		TimeChart timeChart = new TimeChart();
+		
+		JFrame chart = new JFrame();
+		chart.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		Button saveButton = new Button("Zapisz wykres");
+		
+		Date date = new Date() ;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+		
+		ChartPanel chartPanel = timeChart.barChart(gnrInEachDay);
+		
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ChartUtilities.saveChartAsJPEG(new File("charts/chart" + dateFormat.format(date) + ".jpg"), chartPanel.getChart(), 1000, 600);
+					JOptionPane.showMessageDialog(null, "Zapisano!");
+				} catch (IOException ex) {
+					System.err.println(ex);
+				}
+			}
+		});
+		
+		Button okButton = new Button("Ok");
+		
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chart.dispose();
+			}
+		});
+		
+		gbc.insets = new Insets(10, 0, 10, 0);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		chart.add(new JLabel(gnr.toString()), gbc);
+		gbc.gridy++;
+		chart.add(chartPanel, gbc);
+		gbc.gridy++;
+		chart.add(saveButton, gbc);
+		gbc.gridx++;
+		chart.add(okButton, gbc);
+		chart.setVisible(true);
+		chart.pack();
+		
+		return;
 	}
 
 	private void createTimeChartWindow(GNR gnr) {
@@ -194,13 +305,17 @@ public class MainApp extends JFrame implements ActionListener {
 		gbc.gridy = 0;
 		chart.add(new JLabel(gnr.toString()), gbc);
 		gbc.gridy++;
-		chart.add(chartPanel, gbc);
-		gbc.gridy++;
-		chart.add(saveButton, gbc);
-		gbc.gridx++;
+		if (additionalOptionsPanel.getCheckboxChart().isSelected()) {
+			chart.add(chartPanel, gbc);
+			gbc.gridy++;
+			chart.add(saveButton, gbc);
+			gbc.gridx++;
+		}
 		chart.add(okButton, gbc);
 		chart.setVisible(true);
 		chart.pack();
+		
+		return;
 	}
 	
 	public void enableStartButton() {
@@ -208,7 +323,6 @@ public class MainApp extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args) {
-		
 		new MainApp();
 	}
 

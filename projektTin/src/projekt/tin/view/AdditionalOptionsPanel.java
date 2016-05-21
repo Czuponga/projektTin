@@ -75,4 +75,8 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
 	}
 
+	public JCheckBox getCheckboxChart() {
+		return checkboxChart;
+	}
+
 }

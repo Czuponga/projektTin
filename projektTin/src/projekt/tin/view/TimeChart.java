@@ -12,7 +12,6 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 public class TimeChart {
-	
 	public ChartPanel addData(List<Double> oneDayCallsInQuarter) {
 		TimeSeries quartersSeries = new TimeSeries("Natê¿enie ruchu");
 		
@@ -45,6 +44,7 @@ public class TimeChart {
 		
 		for (Double myDay : callsList) {
 			dataset.setValue(myDay, "Natê¿enie", Integer.toString(day));
+			day++;
 		}
 		
 		JFreeChart chart = ChartFactory.createBarChart("Natê¿enie ruchu", "Dzieñ", "Natê¿enie", dataset, PlotOrientation.VERTICAL,

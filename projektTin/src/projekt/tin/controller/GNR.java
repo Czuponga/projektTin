@@ -42,22 +42,26 @@ public class GNR {
 	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
 	 *            kolejnych kwadransach
 	 */
-	public void methodADPQH(List<List> thirtyDaysCallsInQuarters) {
+	public List<Double> methodADPQH(List<List> thirtyDaysCallsInQuarters) {
 		List<Double> gnrInEachDay = new ArrayList<>();
 		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
 			findGNRQuarter(thirtyDaysCallsInQuarters.get(i));
 			gnrInEachDay.add(calls);
 		}
 		calls = averageGNR(gnrInEachDay);
+		
+		return gnrInEachDay;
 	}
 	
-	public void methodADPFH(List<List> thirtyDaysCallsInHour){
+	public List<Double> methodADPFH(List<List> thirtyDaysCallsInHour){
 		List<Double> gnrInEachDay = new ArrayList<>();
 		for(int i = 0; i<thirtyDaysCallsInHour.size(); i++){
 			findGNRHour(thirtyDaysCallsInHour.get(i));
 			gnrInEachDay.add(calls);
 		}
 		calls = averageGNR(gnrInEachDay);
+		
+		return gnrInEachDay;
 	}
 	
 	/**
