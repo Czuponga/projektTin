@@ -29,8 +29,9 @@ public class GNR {
 	 *            Lista 30 dni z których ka¿dy jest list¹ iloœci wywo³añ w
 	 *            kolejnych kwadransach
 	 */
-	public void methodTCBH(List<List> thirtyDaysCallsInQuarters) {
-		findGNRQuarter(averageDay(thirtyDaysCallsInQuarters));
+	public void methodTCBH(List<List> thirtyDaysCallsInQuarters, Integer startFrom, Integer endIn) {
+		findGNRQuarter(averageDay(thirtyDaysCallsInQuarters), startFrom, endIn);
+		System.out.println("ind " +firstQuarterIndex);
 		setHour(firstQuarterIndex);
 	}
 	
@@ -45,7 +46,7 @@ public class GNR {
 	public List<Double> methodADPQH(List<List> thirtyDaysCallsInQuarters) {
 		List<Double> gnrInEachDay = new ArrayList<>();
 		for (int i = 0; i < thirtyDaysCallsInQuarters.size(); i++) {
-			findGNRQuarter(thirtyDaysCallsInQuarters.get(i));
+			findGNRQuarter(thirtyDaysCallsInQuarters.get(i), null, null);
 			gnrInEachDay.add(calls);
 		}
 		calls = averageGNR(gnrInEachDay);
@@ -93,25 +94,40 @@ public class GNR {
 	 * @param oneDayCallsInQuarter
 	 *            Lista iloœci wywo³añ w kolejnych kwadransach
 	 */
-	private void findGNRQuarter(List<Double> oneDayCallsInQuarter) {
+	private void findGNRQuarter(List<Double> oneDayCallsInQuarter, Integer startFrom, Integer endIn) {
 		double max = 0;
 		double sum = 0;
+		
 		firstQuarterIndex = 0;
-		for (int i = 0; i < oneDayCallsInQuarter.size() - 4; i++) {
-			for (int j = i; j < i + 4; j++) {
-				sum += oneDayCallsInQuarter.get(j);
+		if (startFrom == null || endIn == null) {
+			for (int i = 0; i < oneDayCallsInQuarter.size() - 4; i++) {
+				for (int j = i; j < i + 4; j++) {
+					sum += oneDayCallsInQuarter.get(j);
+				}
+				if (sum > max) {
+					max = sum;
+					firstQuarterIndex = i;
+				}
+				sum = 0;
 			}
-			if (sum > max) {
-				max = sum;
-				firstQuarterIndex = i;
+		} else {
+			for (int i = 0; i < oneDayCallsInQuarter.size() - 4; i++) {
+				if ((i  >= startFrom / 15) && (i  <= endIn / 15)) {
+					for (int j = i; j < i + 4; j++) {
+						sum += oneDayCallsInQuarter.get(j);
+					}
+					if (sum > max) {
+						max = sum;
+						firstQuarterIndex = i;
+					}
+					sum = 0;
+				}
 			}
-			sum = 0;
 		}
 		calls = max;
 	}
 
 	private void findGNRHour(List<Double> oneDayCallsInHour){
-		double max = 0;
 		firstQuarterIndex = 0;
 		Collections.sort(oneDayCallsInHour);
 		Collections.reverse(oneDayCallsInHour);
@@ -168,7 +184,7 @@ public class GNR {
 	
 	public String toString(){
 		if(getHour()!=null){
-			return "Godzina najwiêkszego ruchu: "+getHour()+"\nŒrednie natê¿enie ruchu: "+getCalls();
+			return "Godzina najwiêkszego ruchu: "+getHour()+"\n Œrednie natê¿enie ruchu: "+getCalls();
 		}
 		else{
 			return "\nŒrednie natê¿enie ruchu: "+getCalls();

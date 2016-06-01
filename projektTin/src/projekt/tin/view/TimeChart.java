@@ -12,20 +12,53 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 public class TimeChart {
-	public ChartPanel addData(List<Double> oneDayCallsInQuarter) {
+	public ChartPanel addData(List<Double> oneDayCallsInQuarter, Integer startFrom, Integer endIn) {
 		TimeSeries quartersSeries = new TimeSeries("Natê¿enie ruchu");
 		
 		Minute time = new Minute();
-		int minute = 0;
-		int hour = 0;
-		for (Double myQuarter : oneDayCallsInQuarter) {
-			time = new Minute(minute,hour,1,12,2015);
-			quartersSeries.add(time, myQuarter);
-			if (minute == 45) {
-				minute = 0;
-				hour++;
+		if (startFrom == null || endIn == null) {
+			int minute = 0;
+			int hour = 0;
+			for (Double myQuarter : oneDayCallsInQuarter) {
+				time = new Minute(minute,hour,1,12,2015);
+				quartersSeries.add(time, myQuarter);
+				if (minute == 45) {
+					minute = 0;
+					hour++;
+				} else {
+					minute += 15;
+				}
+			}
+		} else {
+			int minute = startFrom;
+			while (minute % 15 != 0) {
+				minute++;
+			}
+			int hour;
+			
+			if (minute < 59) {
+				hour = 0;
 			} else {
-				minute += 15;
+				hour = minute / 60;
+				minute = hour % 60;
+				while (minute % 15 != 0) {
+					minute--;
+				}
+			}
+			
+			int i = 0;
+			for (Double myQuarter : oneDayCallsInQuarter) {
+				if ((i  >= startFrom / 15) && (i  <= endIn / 15)) {
+					time = new Minute(minute,hour,1,12,2015);
+					quartersSeries.add(time, myQuarter);
+					if (minute == 45) {
+						minute = 0;
+						hour++;
+					} else {
+						minute += 15;
+					}
+				}
+				i ++;
 			}
 		}
 

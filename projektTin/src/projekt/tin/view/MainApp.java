@@ -122,13 +122,22 @@ public class MainApp extends JFrame implements ActionListener {
 		if(src == bStart){
 			GNR gnr = new GNR();
 			if(mainOptionsPanel.getMethod() == MainOptionsPanel.TCBH){
-				createTimeChartWindow(gnr);
+				createTimeChartWindow(gnr, null, null);
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPQH){
 				createBarChartWindow(gnr);
 			}
 			else if(mainOptionsPanel.getMethod() == MainOptionsPanel.ADPFH){
 				createBarChartWindowADPFH(gnr);
+			} else if (mainOptionsPanel.getMethod() == MainOptionsPanel.FDMP) {
+				Integer startFrom = convertHourToMinutes(mainOptionsPanel.getTimeFrom().getText());
+				Integer endIn = convertHourToMinutes(mainOptionsPanel.getTimeTo().getText());
+				if (startFrom == null || endIn == null || endIn < startFrom) {
+					JOptionPane.showMessageDialog(null, "B³êdne dane!");
+					return;
+				}
+				
+				createTimeChartWindow(gnr, startFrom, endIn);
 			}
 		}
 		else if (src == miAboutApp) {
@@ -148,7 +157,33 @@ public class MainApp extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, message);
 		}
 		else if(src == miAboutADPFH){
-			JOptionPane.showMessageDialog(null, "ADPFH");
+			String message = "Natê¿enie ruchu jest mierzone w sposób ci¹g³y przez ca³y dzieñ w godzinnych przedzia³ach. "
+					+ "\nTylko najwiêksza wartoœæ natê¿enia jest rejestrowana. "
+					+ "\nNatê¿enie w sensie ADPH jest œredni¹ z 10 dziennych natê¿eñ szczytowych, wybranych spoœród 14 kolejnych dni pomiarowych";
+			JOptionPane.showMessageDialog(null, message);
+		}
+		else if (src == miAboutADPQH) {
+			String message = "Natê¿enie ruchu jest mierzone w sposób ci¹g³y przez ca³y dzieñ w 15-minutowych przedzia³ach. "
+					+ "\nWartoœci natê¿enia s¹ przetwarzane codziennie w celu znalezienia czterech kolejnych kwadransów, "
+					+ "\nktórych suma daje najwiêksz¹ wartoœæ natê¿enia. Tylko ta wartoœæ natê¿enia ruchu zastaje przechowana. "
+					+ "\nŒrednia jest obliczana z dziennych natê¿eñ szczytowych.";
+			JOptionPane.showMessageDialog(null, message);
+		}
+		else if (src == miAboutTCBH) {
+			String message = "Standardowa metoda obliczania œredniej godziny najwiêkszego ruchu. "
+					+ "\nKa¿dego dnia dla poszczególnych kwadransów zapisuje siê wartoœci za³atwianego ruchu "
+					+ "\nNastêpnie wartoœci z tych samych kwadransów poszczególnych dni s¹ nastêpnie uœredniane. "
+					+ "\nCztery nastêpuj¹ce po sobie kwadranse z tego dnia, "
+					+ "\nktóre po zsumowaniu daj¹ najwiêksz¹ wartoœæ, tworz¹ godzinê TCBH z jej natê¿eniem. ";
+			JOptionPane.showMessageDialog(null, message);
+		}
+		else if (src == miAboutFDMH) {
+			String message = "Operator mo¿e uznaæ, ¿e jest rzecz¹ ekonomicznie uzasadnion¹, "
+					+ "\nby ograniczyæ pomiary do kilku lub jednej godziny dziennie . "
+					+ "\nOkres pomiaru w metodzie FDMP powinien odpowiadaæ najwy¿ej po³o¿onej czêœci przekroju ruchu, "
+					+ "\nw której przypuszczalnie znajduje siê godzina najwiêkszego ruchu obliczana metod¹ TCBH. Wartoœci pomiarowe zbierane s¹ oddzielnie dla ka¿dego kwadransa, a godzina najwiêkszego ruchu jest okreœlana na koñcu okresu pomiarowego. "
+					+ "\nW praktyce metoda ta dostarcza wyniki, które stanowi¹ oko³o 95% poziomu ruchu obliczanego metod¹ TCBH";
+			JOptionPane.showMessageDialog(null, message);
 		}
 
 	}
@@ -197,10 +232,12 @@ public class MainApp extends JFrame implements ActionListener {
 		gbc.gridy = 0;
 		chart.add(new JLabel(gnr.toString()), gbc);
 		gbc.gridy++;
-		chart.add(chartPanel, gbc);
-		gbc.gridy++;
-		chart.add(saveButton, gbc);
-		gbc.gridx++;
+		if (additionalOptionsPanel.getCheckboxChart().isSelected()) {
+			chart.add(chartPanel, gbc);
+			gbc.gridy++;
+			chart.add(saveButton, gbc);
+			gbc.gridx++;
+		}
 		chart.add(okButton, gbc);
 		chart.setVisible(true);
 		chart.pack();
@@ -253,10 +290,12 @@ public class MainApp extends JFrame implements ActionListener {
 		gbc.gridy = 0;
 		chart.add(new JLabel(gnr.toString()), gbc);
 		gbc.gridy++;
-		chart.add(chartPanel, gbc);
-		gbc.gridy++;
-		chart.add(saveButton, gbc);
-		gbc.gridx++;
+		if (additionalOptionsPanel.getCheckboxChart().isSelected()) {
+			chart.add(chartPanel, gbc);
+			gbc.gridy++;
+			chart.add(saveButton, gbc);
+			gbc.gridx++;
+		}
 		chart.add(okButton, gbc);
 		chart.setVisible(true);
 		chart.pack();
@@ -264,8 +303,8 @@ public class MainApp extends JFrame implements ActionListener {
 		return;
 	}
 
-	private void createTimeChartWindow(GNR gnr) {
-		gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter());
+	private void createTimeChartWindow(GNR gnr, Integer startFrom, Integer endIn) {
+		gnr.methodTCBH(mainOptionsPanel.getThirtyDaysCallsInQuarter(), startFrom, endIn);
 		TimeChart timeChart = new TimeChart();
 		
 		JFrame chart = new JFrame();
@@ -275,8 +314,7 @@ public class MainApp extends JFrame implements ActionListener {
 		
 		Date date = new Date() ;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
-		
-		ChartPanel chartPanel = timeChart.addData(mainOptionsPanel.getOneDayCallsInQuarter());
+		ChartPanel chartPanel = timeChart.addData(mainOptionsPanel.getOneDayCallsInQuarter(), startFrom, endIn);
 		
 		saveButton.addActionListener(new ActionListener() {
 			@Override
@@ -316,6 +354,30 @@ public class MainApp extends JFrame implements ActionListener {
 		chart.pack();
 		
 		return;
+	}
+	
+	public Integer convertHourToMinutes(String time) {
+		String[] parts;
+		parts = time.split(":");
+		double hour;
+		
+		try {
+			hour = Double.parseDouble(parts[0]);
+		} catch (Exception e) {
+			return null;
+		}
+		double minute;
+		if (parts.length > 1) {
+			minute = Double.parseDouble(parts[1]);
+		}  else {
+			minute = 0;
+		}
+		if (hour > 24 || minute > 59) {
+			return null;
+		}
+		double minutes = (hour * 60) + minute;
+		System.out.println(minutes);
+		return (int) minutes;
 	}
 	
 	public void enableStartButton() {

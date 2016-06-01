@@ -16,9 +16,7 @@ import javax.swing.JSlider;
 @SuppressWarnings("serial")
 public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 
-	private JCheckBox checkboxChart, checkboxSimulation;
-	private JSlider sliderSimulationSpeed;
-	private JLabel simulationSpeedLabel;
+	private JCheckBox checkboxChart;
 
 	public AdditionalOptionsPanel() {
 		super(new GridBagLayout());
@@ -32,15 +30,6 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createTitledBorder("Opcje dodatkowe"));
 
 		checkboxChart = new JCheckBox("Generuj wykres", true);
-		checkboxSimulation = new JCheckBox("Symulacja czasu", false);
-
-		sliderSimulationSpeed = new JSlider();
-		sliderSimulationSpeed.setEnabled(false);
-		
-		simulationSpeedLabel = new JLabel("50");
-
-		sliderSimulationSpeed.addChangeListener(new BoundedChangeListener(simulationSpeedLabel));
-		checkboxSimulation.addActionListener(this);
 
 		/*
 		 * definiowanie uk³adu komponentów
@@ -52,26 +41,13 @@ public class AdditionalOptionsPanel extends JPanel implements ActionListener {
 		gbc.gridy = 0;
 		add(checkboxChart, gbc);
 		gbc.gridy++;
-		add(checkboxSimulation, gbc);
-		gbc.gridy++;
 		gbc.anchor = GridBagConstraints.CENTER;
-		add(new JLabel("Szybkoœæ symulacji"), gbc);
-		gbc.gridy++;
 		gbc.weighty = 1;
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		add(sliderSimulationSpeed, gbc);
-		gbc.gridy++;
-		add(simulationSpeedLabel, gbc);
 	}
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if (checkboxSimulation.isSelected()) {
-			sliderSimulationSpeed.setEnabled(true);
-		}
-		else {
-			sliderSimulationSpeed.setEnabled(false);
-		}
 
 	}
 

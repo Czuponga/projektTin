@@ -1,6 +1,5 @@
 package projekt.tin.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -20,8 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JTextField;
 
 import projekt.tin.controller.DaysGenerator;
 import projekt.tin.controller.TextFileReader;
@@ -38,8 +35,10 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 	private List<List> thirtyDaysCallsInQuarter;
 	private List<List> thirtyDaysCallsInHour;
 	private int numberOfCallsInDay;
-	public static int TCBH = 1, ADPQH = 2, ADPFH = 3;
+	public static int TCBH = 1, ADPQH = 2, ADPFH = 3, FDMP = 4;
 	private JButton bStart;
+	private JTextField timeFrom;
+	private JTextField timeTo;
 
 	public MainOptionsPanel() {
 		super(new GridBagLayout());
@@ -66,13 +65,28 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		rbMethod1 = new JRadioButton("Metoda TCBH", true);
 		rbMethod2 = new JRadioButton("Metoda ADPQH");
 		rbMethod3 = new JRadioButton("Metoda ADPFH");
-		rbMethod4 = new JRadioButton("Metoda 4");
-
+		rbMethod4 = new JRadioButton("Metoda FDMP");
+		
+		rbMethod4.addActionListener(this);
+		rbMethod3.addActionListener(this);
+		rbMethod2.addActionListener(this);
+		rbMethod1.addActionListener(this);
+		
 		bgMethodChooser = new ButtonGroup();
 		bgMethodChooser.add(rbMethod1);
 		bgMethodChooser.add(rbMethod2);
 		bgMethodChooser.add(rbMethod3);
 		bgMethodChooser.add(rbMethod4);
+		
+		timeFrom = new JTextField();
+		timeFrom.setText("Od");
+		timeFrom.setMinimumSize(new Dimension(50, 25));
+		timeFrom.setEnabled(false);
+		
+		timeTo = new JTextField();
+		timeTo.setText("Do");
+		timeTo.setMinimumSize(new Dimension(50, 25));
+		timeTo.setEnabled(false);
 
 		bFileOne.addActionListener(this);
 		bFileTwo.addActionListener(this);
@@ -107,8 +121,14 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		gbc.gridy++;
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-
 		add(rbMethod4, gbc);
+		gbc.gridy++;
+		gbc.gridx = 0;
+		
+		add(timeFrom, gbc);
+		gbc.gridx++;
+		add(timeTo, gbc);
+		
 	}
 
 	public int getMethod() {
@@ -121,6 +141,8 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 		}
 		else if (rbMethod3.isSelected()) {
 			result = ADPFH;
+		} else if (rbMethod4.isSelected()) {
+			result = FDMP;
 		}
 		return result;
 	}
@@ -203,14 +225,36 @@ public class MainOptionsPanel extends JPanel implements ActionListener {
 					bStart.setEnabled(true);
 					thirtyDaysCallsInQuarter = generateDays();
 					convertToCallsInHour();
+					
 				}
 
 			}
+		}
+		
+		if (rbMethod4.isSelected()) {
+			timeFrom.setEnabled(true);
+			timeTo.setEnabled(true);
+		}
+		if (rbMethod3.isSelected() || rbMethod2.isSelected() || rbMethod2.isSelected()) {
+			timeFrom.setEnabled(false);
+			timeTo.setEnabled(false);
 		}
 	}
 
 	public List<Double> getOneDayCallsInQuarter() {
 		return oneDayCallsInQuarter;
+	}
+
+	public JRadioButton getRbMethod4() {
+		return rbMethod4;
+	}
+
+	public JTextField getTimeFrom() {
+		return timeFrom;
+	}
+
+	public JTextField getTimeTo() {
+		return timeTo;
 	}
 
 
