@@ -38,7 +38,7 @@ public class MainApp extends JFrame implements ActionListener {
 
 	private JMenuBar menuBar;
 	private JMenu menuHelp, menuAboutGNR;
-	private JMenuItem miAuthors, miAboutApp, miHowToUse, miAboutTCBH, miAboutADPQH, miAboutADPFH, miAboutFDMP, miAboutFDMH;
+	private JMenuItem miAuthors, miAboutApp, miHowToUse, miAboutTCBH, miAboutADPQH, miAboutADPFH, miAboutFDMP;
 	private JButton bStart;
 	private MainOptionsPanel mainOptionsPanel;
 	private AdditionalOptionsPanel additionalOptionsPanel;
@@ -76,7 +76,6 @@ public class MainApp extends JFrame implements ActionListener {
 		miAuthors = new JMenuItem("Autorzy");
 		miAboutADPFH = new JMenuItem("O metodzie ADPFH");
 		miAboutADPQH = new JMenuItem("O metodzie ADPQH");
-		miAboutFDMH = new JMenuItem("O metodzie FDMH");
 		miAboutFDMP = new JMenuItem("O metodzie FDMP");
 		miAboutTCBH = new JMenuItem("O metodzie TCBH");
 
@@ -91,7 +90,6 @@ public class MainApp extends JFrame implements ActionListener {
 		menuAboutGNR.add(miAboutADPQH);
 		menuAboutGNR.add(miAboutADPFH);
 		menuAboutGNR.add(miAboutFDMP);
-		menuAboutGNR.add(miAboutFDMH);
 		
 
 		miAboutApp.addActionListener(this);
@@ -99,7 +97,6 @@ public class MainApp extends JFrame implements ActionListener {
 		miHowToUse.addActionListener(this);
 		miAboutADPFH.addActionListener(this);
 		miAboutADPQH.addActionListener(this);
-		miAboutFDMH.addActionListener(this); 
 		miAboutFDMP.addActionListener(this);
 		miAboutTCBH.addActionListener(this);
 		
@@ -153,7 +150,10 @@ public class MainApp extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, message);
 		}
 		else if (src == miHowToUse) {
-			String message = "Ma³y help dla u¿ytkowników gdzie maj¹ klikaæ";
+			String message = "Aby wykonaæ obliczenia Godziny Najwiêkszego Ruchu nale¿y wybraæ dwa pliki(pierwszy to CZAS.txt, drugi INT.txt). "
+					+ "\nPo wybraniu metody obliczeñ po prawej stronie okna mo¿na za³¹czyæ lub wy³¹czyæ generowanie wykresu."
+					+ "\nDla metody FDMP mo¿liwe jest wprowadzenie przedzia³u czasowego obserwacji w formacie hh:mm."
+					+ "\nWygenerowany wykres mo¿na zapisaæ naciskaj¹c przyisk \"zapisz\", wykresy zapisuj¹ siê w katalogu \"charts\" w folderze aplikacji.";
 			JOptionPane.showMessageDialog(null, message);
 		}
 		else if(src == miAboutADPFH){
@@ -177,11 +177,12 @@ public class MainApp extends JFrame implements ActionListener {
 					+ "\nktóre po zsumowaniu daj¹ najwiêksz¹ wartoœæ, tworz¹ godzinê TCBH z jej natê¿eniem. ";
 			JOptionPane.showMessageDialog(null, message);
 		}
-		else if (src == miAboutFDMH) {
+		else if (src == miAboutFDMP) {
 			String message = "Operator mo¿e uznaæ, ¿e jest rzecz¹ ekonomicznie uzasadnion¹, "
 					+ "\nby ograniczyæ pomiary do kilku lub jednej godziny dziennie . "
 					+ "\nOkres pomiaru w metodzie FDMP powinien odpowiadaæ najwy¿ej po³o¿onej czêœci przekroju ruchu, "
-					+ "\nw której przypuszczalnie znajduje siê godzina najwiêkszego ruchu obliczana metod¹ TCBH. Wartoœci pomiarowe zbierane s¹ oddzielnie dla ka¿dego kwadransa, a godzina najwiêkszego ruchu jest okreœlana na koñcu okresu pomiarowego. "
+					+ "\nw której przypuszczalnie znajduje siê godzina najwiêkszego ruchu obliczana metod¹ TCBH. "
+					+ "\nWartoœci pomiarowe zbierane s¹ oddzielnie dla ka¿dego kwadransa, a godzina najwiêkszego ruchu jest okreœlana na koñcu okresu pomiarowego. "
 					+ "\nW praktyce metoda ta dostarcza wyniki, które stanowi¹ oko³o 95% poziomu ruchu obliczanego metod¹ TCBH";
 			JOptionPane.showMessageDialog(null, message);
 		}
